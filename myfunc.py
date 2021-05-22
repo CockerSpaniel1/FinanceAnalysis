@@ -40,7 +40,7 @@ import pandas as pd
 import mplfinance as mpf
 
 def getStockDaily( stockno ):
-    #path='C:\\Users\\jack\\Desktop\\pythonsample\\'
+    #path='C:\\Users\\haoha\\Desktop\\pythonsample\\'
     f=open(stockno+'.csv')
     data = [ i.strip('\n').split(',') for i in f ]
     data = [ [stockno,datetime.datetime.strptime(i[0],'%Y/%m/%d'),float(i[3]),float(i[4]),float(i[5]),float(i[6]),float(i[1]),float(i[8]),float(i[2])]  for i in data ] 
@@ -77,13 +77,12 @@ def chartKbar_dict(Kbar):
     Kbar_df.set_index( "Time" , inplace=True)
     mpf.plot(Kbar_df,volume=True,type='candle',style='charles')
     
-def chartOrder(Kbar,TR):
+def chartOrder(Kbar,TR,addp=[]):
     Kbar_df=pd.DataFrame(Kbar)
     Kbar_df.columns = [ i[0].upper()+i[1:] for i in Kbar_df.columns ]
     Kbar_df.set_index( "Time" , inplace=True)
     
-    # add plot      
-    addp=[]
+    # add plot   
     BTR = [ i for i in TR if i[0]=='B' ]
     # 如果我有買方 交易紀錄的話 圖表才顯示買方交易
     if BTR != []:
@@ -101,8 +100,8 @@ def chartOrder(Kbar,TR):
                 BuyCoverPoint.append( Kbar_df['High'][date] * 1.001 )
             else:
                 BuyCoverPoint.append(numpy.nan)
-        addp.append(mpf.make_addplot(BuyOrderPoint,scatter=True,markersize=200,marker='^',color='red'))
-        addp.append(mpf.make_addplot(BuyCoverPoint,scatter=True,markersize=200,marker='v',color='blue'))
+        addp.append(mpf.make_addplot(BuyOrderPoint,scatter=True,markersize=20,marker='^',color='red'))
+        addp.append(mpf.make_addplot(BuyCoverPoint,scatter=True,markersize=20,marker='v',color='blue'))
     STR = [ i for i in TR if i[0]=='S' ]
     if STR != []:
         SellOrderPoint = [] 
@@ -122,7 +121,7 @@ def chartOrder(Kbar,TR):
         addp.append(mpf.make_addplot(SellOrderPoint,scatter=True,markersize=200,marker='v',color='green'))
         addp.append(mpf.make_addplot(SellCoverPoint,scatter=True,markersize=200,marker='^',color='blue'))
     
-    mpf.plot(Kbar_df,addplot=addp,volume=True,type='candle',style='charles')
+    mpf.plot(Kbar_df,addplot=addp,volume=False,type='candle',style='charles')
     
 def getPerformance(TR):
     # total_profit=[ i[4]-i[2] for i in TR if i[0]=='B' ]

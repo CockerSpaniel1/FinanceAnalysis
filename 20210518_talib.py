@@ -3,7 +3,8 @@ from myfunc import *
 kbar = getStockDaily_dict( '0050' )
 
 from talib.abstract import *
-sma=SMA(kbar,timeperiod=5)
+short_sma=SMA(kbar,timeperiod=5)
+long_sma=SMA(kbar,timeperiod=60)
 
 import pandas as pd 
 import numpy 
@@ -14,7 +15,8 @@ Kbar_df.columns = [ i[0].upper()+i[1:] for i in Kbar_df.columns ]
 Kbar_df.set_index( "Time" , inplace=True)
 
 addp=[]
-addp.append(mpf.make_addplot(sma,color='blue'))
+addp.append(mpf.make_addplot(short_sma,color='#FFA48B'))
+addp.append(mpf.make_addplot(long_sma,color='#CC0000'))
 
 mpf.plot(Kbar_df,addplot=addp,volume=True,type='candle',style='charles')
  
