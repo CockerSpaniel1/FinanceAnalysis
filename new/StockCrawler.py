@@ -33,6 +33,7 @@ total_data = []
 
 def crawl_stock(stockNo):
     for date in date_list:
+
         try:
             html=requests.get('https://www.twse.com.tw/exchangeReport/STOCK_DAY?response='+response+'&date='+date+'&stockNo='+stockNo+'&_='+timestamp)
             data=json.loads(html.text)
@@ -41,10 +42,10 @@ def crawl_stock(stockNo):
                 row=[ i.replace(',','') for i in row ]
                 # print(row)
                 total_data.append(row)
-            print(date,'爬蟲成功')
+            #print(date,'爬蟲成功')
             time.sleep(5)
         except:
-            print(date,'爬蟲失敗')
+            print(stockNo,date,'爬蟲失敗')
             break
 
 # 分隔線-----------------------------------
