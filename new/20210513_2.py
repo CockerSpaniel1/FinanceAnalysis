@@ -26,8 +26,8 @@ def ConverYear(a):
     return '/'.join([b1,b[1],b[2]])
 
 response='json'
-stockNo='2303'
-timestamp = str(datetime.datetime.now().timestamp())
+stockNo='2002'
+timestamp='1621490872557'
 
 total_data = []
 for date in date_list:
@@ -46,6 +46,8 @@ for date in date_list:
         break
 
 # 分隔線-----------------------------------
+
+#f=open('C:\\Users\\16F-2\\Desktop\\pythonsample\\'+stockNo+'.csv','a')
 f=open(stockNo+'.csv','a')
 
 for row in total_data:
