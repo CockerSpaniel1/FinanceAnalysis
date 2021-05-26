@@ -1,4 +1,4 @@
-from myfunc import getStockDaily_dict,  chartKbar_dict
+from myfunc import getStockDaily_dict,  chartKbar
 # 取得資料 dictionary 格式 # 計算技術指標
 Kbar = getStockDaily_dict( '0050' )
 
