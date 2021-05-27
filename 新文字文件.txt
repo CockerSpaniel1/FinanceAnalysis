@@ -1,0 +1,27 @@
+# 限價單 到期刪單
+import time
+def OrderLMT(broker,stock,bs,price,qty,wait=10):
+    OrderNo=GOC.Order(broker,stock,bs,price,qty,"ROD","LMT","A")
+    EndTime=time.time()+wait
+    while time.time() <= EndTime:
+        OrderRS=GOC.GetAccount(broker, OrderNo)
+        OrderInfo=OrderRS[0].split(',')
+        if OrderInfo[1] == '成交':
+            return OrderInfo
+    GOC.Delete(broker, OrderNo)
+    return False
+
+def OrderRangeLMTtoDeal(broker,stock,bs,price,qty,wait=10):
+    OrderPrice=float(price)
+    while True:
+        OrderPrice = GetPricebyTick(OrderPrice,1)
+        OrderInfo=OrderLMT(broker,stock,bs,str(OrderPrice),qty,wait)
+        if OrderInfo == False:
+            continue
+        elif OrderInfo[1] == '成交':
+            return OrderInfo
+def OrderRangeLMT(broker,stock,bs,price,qty,wait=10,tick=3):
+    price=float(price)
+    OrderPrice = GetPricebyTick(price,tick)
+    OrderInfo=OrderLMT(broker,stock,bs,str(OrderPrice),qty,wait)
+    return OrderInfo

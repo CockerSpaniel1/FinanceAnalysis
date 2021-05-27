@@ -15,11 +15,12 @@ df.drop(df.head(2).index, inplace=True)
 df.drop(df.tail(5).index, inplace=True)
 
 #print(df.index)
-semicID = list(df.index.get_level_values(0))
+#semicID = list(df.index.get_level_values(0))
 
-semic_dict = dict(zip(df.index.get_level_values(0),df.index.get_level_values(1)))
+#semic_dict = dict(zip(df.index.get_level_values(0),df.index.get_level_values(1)))
 
-from new.StockCrawler import *
+from new.stock_crawler import *
 
-for stockid in semicID:
-    crawl_stock(stockid)
+#for stockid in semicID:
+    #crawl_stock(stockid)
+crawl_stock('2303')

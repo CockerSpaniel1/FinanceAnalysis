@@ -1,11 +1,14 @@
 import mplfinance as mpf
 from talib.abstract import *
 
+import matplotlib.pyplot as plt
+
+
 addp=[]
-#iday = intraday.loc['2019-11-05':'2019-11-06',:]
+
 def draw_candlestick(df):
     df.set_index( "Time" , inplace=True)
-    mc = mpf.make_marketcolors(up='red', down='black')
+    mc = mpf.make_marketcolors(up='red', down='green')
     s = mpf.make_mpf_style(base_mpf_style = 'charles',marketcolors=mc)
     mpf.plot(df,addplot=addp, volume=True, type='candle', style=s)
 
@@ -19,18 +22,46 @@ def append_MA(dic):
 
 
 def append_RSI(dic):
-    rsi=RSI(stock_dict , timeperiod=20)
+    rsi=RSI(dic , timeperiod=20)
     addp.append(mpf.make_addplot(rsi,panel='lower',secondary_y=False))
     addp.append(mpf.make_addplot([50]* len(rsi),panel='lower',secondary_y=False,color='red'))
     #addp.append(mpf.make_addplot([70]* len(rsi),panel='lower',secondary_y=False,color='red'))
-    #(30,70)
+    #(30,70)d
+
     
-#-----
-from myfunc import get_stock_df, transform_dict
-stock_df =  get_stock_df('0050') 
-stock_dict = transform_dict(stock_df)
-draw_candlestick(stock_df)
-#-------
+def append_BBAND(dic):
+    upper,middle,lower=BBANDS(dic,timeperiod=20)
+    addp.append(mpf.make_addplot(upper))
+    addp.append(mpf.make_addplot(middle))
+    addp.append(mpf.make_addplot(lower))
+
+#-----以下測試用 測完即刪
+from processing import get_stock_df, transform_dict
+stock_df =  get_stock_df('2303')
+ax=plt.subplot(111)
+ax.plot(stock_df['Time'],stock_df['Close'])
+#ax.axvline(x=2580)
+#stock_df=stock_df.loc['2010-01-04':'2010-03-05',:]
+#stock_df=stock_df.iloc[:360]
+
+#stock_dict = transform_dict(stock_df)
+#append_MA(stock_dict)
+#append_RSI(stock_dict)
+#append_BBAND(stock_dict)
+#draw_candlestick(stock_df)
+#-------#ax=plt.subplot(111)
+
+plt.plot(stock_df['Time'],stock_df['Close']) #,label = "line 1")
+# plt.xlabel('Year')
+# plt.ylabel('Close Price')
+# plt.title('Price versus Year')
+
+
+#plt.bar(stock_df['Time'],stock_df['Volume'])
+#plt.legend()
+
+
+
 #____________________________________________
 # def chartOrder(df, record, addp=[]):
 #     df.set_index( "Time" , inplace=True)
@@ -64,7 +95,6 @@ draw_candlestick(stock_df)
 # short_sma=SMA(kbar,timeperiod=5)    # 前4筆是空值
 # long_sma=SMA(kbar,timeperiod=60)    # 前59筆是空值
 
-
 # addp=[]
 # addp.append(mpf.make_addplot(short_sma))
 # addp.append(mpf.make_addplot(long_sma))
@@ -91,23 +121,6 @@ draw_candlestick(stock_df)
 
 # mpf.plot(Kbar_df,addplot=addp,volume=False,type='candle',style='charles')
 #__________________________________________________________
-from talib.abstract import *
-upper,middle,lower=BBANDS(kbar,timeperiod=20)
 
-import pandas as pd 
-import numpy 
-import mplfinance as mpf
-
-addp=[]
-addp.append(mpf.make_addplot(upper))
-addp.append(mpf.make_addplot(middle))
-addp.append(mpf.make_addplot(lower))
-# addp.append(mpf.make_addplot(rsi,panel='lower',secondary_y=False))
-# addp.append(mpf.make_addplot([30]* len(rsi),panel='lower',secondary_y=False,color='red'))
-# addp.append(mpf.make_addplot([70]* len(rsi),panel='lower',secondary_y=False,color='red'))
-
-Kbar_df=Kbar_df
-
-mpf.plot(Kbar_df,addplot=addp,volume=False,type='candle',style='charles')
  
  

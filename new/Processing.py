@@ -1,33 +1,29 @@
 import pandas as pd 
-import numpy as np
-import mplfinance as mpf
+#import numpy as np
+
 
 def get_stock_df( stockno ):
     #for mpl use ,candlestick
     columns=['Time', 'Match_count', 'Match_value', 'Open', 'High', 'Low', 'Close', 'Diff', 'Volume']
     df = pd.read_csv(stockno +'.csv', parse_dates=[0], names = columns)
     #df['Symbol'] = stockno , 'Symbol'
-    #df['Time'] = pd.to_datetime(df['Time'])
+    #TimeSeries index?
+    #df = df.loc['2010-01-04':'2020-06-30',:]
+    
     df[['Volume', 'Match_count', 'Match_value']] = df[['Volume', 'Match_count', 'Match_value']].astype('float64')
     df = df[['Time', 'Open', 'High', 'Low', 'Close', 'Volume', 'Match_count', 'Match_value']]
-    
+    df.set_index( "Time" , inplace=True)
     #pd.set_option('display.max_columns', None)
     return df   
     
 def transform_dict( df ):
     #for talib use, title lowercase
-    stock_dict ={}
+    stock_dict ={ 'time': df.index }
     for key in df.columns:
         stock_dict[key.lower()] = df[key].to_numpy()
     return stock_dict
         
 #-----------------------------------------------------------------------------
-#K縣方向盤
-#成交量油門
-
-    
-
-
 
 
     
